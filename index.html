@@ -238,7 +238,12 @@ function openD(i){const p=P[i];dtop.style.borderTop='8px solid '+AX[p.ax][1];dax
 dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
 // ===== counter + teacher notes (Apps Script backend in books.js → BOOKS_API) =====
 const ARx=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
-const API=(window.BOOKS_API||'').trim(),ADMIN=location.hash==='#admin';
+const API=(window.BOOKS_API||'').trim();let ADMIN=/admin/.test(location.search+location.hash);
+function adminBadge(){let b=document.getElementById('admbadge');if(!ADMIN){if(b)b.remove();return}
+ if(!b){b=document.createElement('div');b.id='admbadge';b.style.cssText='position:fixed;z-index:60;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#34473B;color:#F3EFE4;border-radius:30px;padding:10px 18px;font:500 14px Alexandria,Tajawal,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.25);text-align:center;max-width:92vw';document.body.appendChild(b)}
+ b.innerHTML=API?'وضع المعلّمة مفعّل ✓ — افتحي تفاصيل «رفوف القرائية» لإضافة كتاب، وأسفل أي مبادرة لإضافة ملاحظة':'وضع المعلّمة: لم يُضَف رابط Apps Script في ملف books.js بعد'}
+addEventListener('hashchange',()=>{ADMIN=/admin/.test(location.search+location.hash);adminBadge()});
+addEventListener('DOMContentLoaded',adminBadge);setTimeout(adminBadge,0);
 let BOOKS=Math.max(0,Math.floor(+window.BOOKS||0)),NOTES={};
 function call(q){return fetch(API+(API.includes('?')?'&':'?')+q+'&t='+Date.now()).then(r=>r.json())}
 function pin(){return localStorage.getItem('booksPin')||(()=>{const v=prompt('أدخلي الرمز السري');if(v)localStorage.setItem('booksPin',v);return v})()}
