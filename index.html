@@ -246,7 +246,7 @@ addEventListener('hashchange',()=>{ADMIN=/admin/.test(location.search+location.h
 addEventListener('DOMContentLoaded',adminBadge);setTimeout(adminBadge,0);
 let BOOKS=Math.max(0,Math.floor(+window.BOOKS||0)),NOTES={};
 function call(q){return fetch(API+(API.includes('?')?'&':'?')+q+'&t='+Date.now()).then(r=>r.json())}
-function pin(){return localStorage.getItem('booksPin')||(()=>{const v=prompt('أدخلي الرمز السري');if(v)localStorage.setItem('booksPin',v);return v})()}
+function pin(){return localStorage.getItem('booksPin')||(()=>{let v=prompt('أدخلي الرمز السري');if(v){v=v.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/\s/g,'');localStorage.setItem('booksPin',v)}return v})()}
 function adminCall(q){const v=pin();if(!v)return Promise.reject('nopin');return call(q+'&pin='+encodeURIComponent(v)).then(d=>{if(!d.ok){localStorage.removeItem('booksPin');alert('الرمز السري غير صحيح');throw 'pin'}return d})}
 if(API)call('action=get').then(d=>{if(typeof d.count==='number')BOOKS=d.count;NOTES=d.notes||{}}).catch(()=>{});
 const SC=['#768E78','#E79897','#8FAEC9','#FCC88A','#C6C09C','#FECDBE','#CFC8DA','#D99A4E'];
