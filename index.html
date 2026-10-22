@@ -234,7 +234,7 @@ function openD(i){const p=P[i];dtop.style.borderTop='8px solid '+AX[p.ax][1];dax
  let h=`<p>${p.d}</p><div class="meta"><span>${p.k}</span><span>${p.w}</span></div><h4>الأهداف</h4><ul>${p.g.map(x=>`<li>${x}</li>`).join('')}</ul>`;
  if(p.b)h+=`<h4>القياس القبلي</h4><p>${p.b}</p>`;if(p.amb)h+=`<h4>طموحاتنا للمنصّة</h4><ul>${p.amb.map(x=>`<li>${x}</li>`).join('')}</ul>`;
  if(p.imp)h+=`<h4>الأثر المرجو</h4><ul>${p.imp.map(x=>`<li>${x}</li>`).join('')}</ul>`;if(p.m.length)h+=`<h4>مؤشرات القياس</h4><ul>${p.m.map(x=>`<li>${x}</li>`).join('')}</ul>`;
- if(p.i==='books')h+=shelfHTML();h+=notesHTML(p.i);dbody.innerHTML=h;if(p.i==='books')mountShelf(dbody.querySelector('.dshelf'));wireNotes(p.i,i);dbody.scrollTop=0;dact.innerHTML=(p.u?`<a class="btn p" href="${p.u}" target="_blank" rel="noopener">${p.ul||'زيارة '+p.t} ↗</a>`:'')+`<button class="btn" onclick="dlg.close()">إغلاق</button>`;dlg.showModal()}
+ if(p.i==='books')h+=shelfHTML();if(p.i==='pen'||p.i==='lens')h+=chartHTML();h+=notesHTML(p.i);dbody.innerHTML=h;if(p.i==='books')mountShelf(dbody.querySelector('.dshelf'));if(p.i==='pen'||p.i==='lens')mountChart(dbody.querySelector('.dchart'));wireNotes(p.i,i);dbody.scrollTop=0;dact.innerHTML=(p.u?`<a class="btn p" href="${p.u}" target="_blank" rel="noopener">${p.ul||'زيارة '+p.t} ↗</a>`:'')+`<button class="btn" onclick="dlg.close()">إغلاق</button>`;dlg.showModal()}
 dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
 // ===== counter + teacher notes (Apps Script backend in books.js → BOOKS_API) =====
 const ARx=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
