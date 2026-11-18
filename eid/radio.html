@@ -50,7 +50,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1d0f06;font-family:
   <pattern id="diamonds" width="34" height="34" patternUnits="userSpaceOnUse"><rect width="34" height="34" fill="#4a2a2c"/><path d="M17 4 L27 17 L17 30 L7 17Z" fill="#3a1f22"/></pattern>
   <pattern id="hasir" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#e5c58e"/><rect width="20" height="20" fill="#dcb97f"/><rect x="20" y="20" width="20" height="20" fill="#dcb97f"/></pattern>
   <pattern id="grille" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#e6d0a2"/><path d="M0 4H8M4 0V8" stroke="#d9bf8b" stroke-width="1"/></pattern>
-  <clipPath id="tapeClip"><rect x="700" y="40" width="200" height="222"/></clipPath>
+  <clipPath id="tapeClip"><rect x="640" y="0" width="340" height="264"/></clipPath>
 </defs>
 
 <!-- الجدار والأرض -->
@@ -132,10 +132,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1d0f06;font-family:
 </g>
 
 <!-- الشريط الورقي (يخرج من فتحة المذياع) -->
-<g clip-path="url(#tapeClip)"><g id="tape" transform="translate(0,230)">
-  <rect x="745" y="40" width="130" height="220" fill="#fffaf0"/>
-  <path d="M745 40 l8 -6 l8 6 l8 -6 l8 6 l8 -6 l8 6 l8 -6 l8 6 l8 -6 l8 6 l8 -6 l8 6 l8 -6 l8 6 l8 -6 l8 6 l2 0" fill="#fffaf0"/>
-  <text id="tapeWord" x="810" y="150" font-family="Amiri" font-weight="700" font-size="46" fill="#2b1a0e" text-anchor="middle" direction="rtl"></text>
+<g clip-path="url(#tapeClip)"><g id="tape" transform="translate(0,260)">
+  <rect x="680" y="22" width="260" height="240" fill="#fffaf0" stroke="#e6d9bf" stroke-width="2"/>
+  <path d="M680 22 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 l10 -8 l10 8 " fill="#fffaf0"/>
+  <text id="tapeWord" x="810" y="170" font-family="Amiri" font-weight="700" font-size="92" fill="#2b1a0e" text-anchor="middle" direction="rtl"></text>
 </g></g>
 
 <!-- المذياع -->
@@ -297,19 +297,19 @@ async function tune(){staticLevel(.18);const p0=needleP;
     $('knobT').setAttribute('transform',`rotate(${-k*300} 852 420)`);crackle.f.frequency.value=900+Math.abs(Math.sin(t*14))*2200;
     $('eye').setAttribute('fill',`hsl(140,70%,${35+25*Math.abs(Math.sin(t*9))}%)`);});
   staticLevel(.02,.2);$('eye').setAttribute('fill','#4be07a');}
-async function playWord(){if(phase!=='ready')return;phase='busy';hud();await zoomTo(RADIO,1.2);
+async function playWord(){if(phase!=='ready')return;phase='busy';hud();
   await powerOn();await tune();
   if(wi===0){jingle();await wait(1.0);await radioSay('intro');await wait(.4);}else{jingle();await wait(1.1);}
   const k=order[wi][1];await radioSay(k);await wait(1.1);await radioSay(k);
-  staticLevel(.008,.4);await zoomTo(FULL,1.0);timerLeft=30;lastSec=30;timerOn=true;phase='timer';hud();}
+  staticLevel(.008,.4);timerLeft=30;lastSec=30;timerOn=true;phase='timer';hud();}
 async function replay(){if(!(phase==='timer'||phase==='paused'))return;const was=phase;timerOn=false;await radioSay(order[wi][1]);if(phase===was&&was==='timer')timerOn=true;}
 function togglePause(){if(phase==='timer'){phase='paused';timerOn=false;}else if(phase==='paused'){phase='timer';timerOn=true;}hud();}
 async function check(){if(!(phase==='timer'||phase==='paused'||phase==='timeup'))return;phase='busy';timerOn=false;hud();stopVoice();
-  $('tapeWord').textContent=order[wi][0];await zoomTo(TAPE,1.1);printer(2.2);
-  await tween(2.2,t=>$('tape').setAttribute('transform',`translate(0,${230*(1-t)})`));bell();phase='checked';hud();}
+  $('tapeWord').textContent=order[wi][0];printer(2.2);
+  await tween(2.2,t=>$('tape').setAttribute('transform',`translate(0,${260*(1-ease(t))})`));bell();phase='checked';hud();}
 async function nextWord(){if(phase!=='checked')return;if(wi>=order.length-1){$('end').classList.remove('hidden');return;}
   phase='busy';hud();await tween(.6,t=>$('tape').setAttribute('transform',`translate(${t*260},${-t*120}) rotate(${t*25} 810 150)`));
-  $('tape').setAttribute('transform','translate(0,230)');await zoomTo(FULL,.9);setTimer(1);staticLevel(.08);
+  $('tape').setAttribute('transform','translate(0,260)');setTimer(1);staticLevel(.08);
   const p0=needleP;await tween(.7,t=>{needleP=p0-.25*ease(t);setNeedle(needleP);});staticLevel(.02);
   wi++;phase='ready';hud();playWord();}
 /* ===== الحلقة ===== */
